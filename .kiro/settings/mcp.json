@@ -1,0 +1,20 @@
+{
+  "mcpServers": {
+    "web-search": {
+      "command": "uvx",
+      "args": ["mcp-server-fetch"],
+      "env": {
+        "SERPER_API_KEY": "${SERPER_API_KEY}"
+      },
+      "disabled": false,
+      "autoApprove": ["web_search"]
+    },
+    "audio-tools": {
+      "command": "python",
+      "args": ["-m", "tools.audio_calculator_mcp_server"],
+      "env": {},
+      "disabled": false,
+      "autoApprove": ["audio_duration_calculator"]
+    }
+  }
+}
