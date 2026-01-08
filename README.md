@@ -360,41 +360,98 @@ output/
 
 ```
 PodcastProduction-Assistant1/
-├── agents/                    # Agent implementations
-│   ├── base_adk_agent.py     # Base class for Google ADK agents
-│   ├── base_langgraph_agent.py # Base class for LangGraph agents
-│   ├── registry.py           # Unified agent registry
-│   ├── topic_refinement_agent.py
-│   ├── topic_researcher_agent.py
-│   ├── outline_architect_agent.py
-│   ├── script_writer_agent.py
-│   └── ...
-├── adk_adapter/              # Google ADK integration
-│   ├── adapter.py            # ADKAgentWrapper
-│   └── a2a_message.py        # Message serialization
-├── langgraph_adapter/        # LangGraph integration
-│   └── adapter.py            # LangGraphAgentWrapper
-├── a2a_broker/               # Message broker
-│   └── broker.py             # Broker implementation
-├── schemas/                  # Pydantic models
-│   ├── state_models.py       # PodcastProductionState
-│   └── output_models.py      # Output models
-├── tools/                    # MCP tools
-│   ├── mcp_client.py         # MCP client wrapper
-│   └── audio_calculator_mcp_server.py
-├── callbacks/                # Monitoring
-│   └── logging_callback.py   # PodcastProductionCallback
-├── config/                   # Configuration
-│   └── settings.py           # Settings management
-├── utils/                    # Utilities
-│   ├── file_writer.py        # File export
-│   └── state_helpers.py      # State validation
-├── .kiro/
+│
+├── agents/                           # 🤖 Agent Implementations
+│   ├── __init__.py                   # Agent exports
+│   ├── base_adk_agent.py             # Base class for Google ADK agents
+│   ├── base_langgraph_agent.py       # Base class for LangGraph agents
+│   ├── registry.py                   # Unified agent registry & management
+│   ├── topic_refinement_agent.py     # Refines user topics into podcast angles
+│   ├── topic_researcher_agent.py     # Basic web research agent
+│   ├── enhanced_researcher_agent.py  # Multi-source parallel research (Web + YouTube + Academic)
+│   ├── outline_architect_agent.py    # Creates structured episode outlines
+│   ├── script_writer_agent.py        # Generates full podcast scripts
+│   ├── fact_checking_validator_agent.py  # Validates claims against sources
+│   ├── show_notes_specialist_agent.py    # Creates comprehensive show notes
+│   ├── social_media_coordinator_agent.py # Generates platform-specific posts
+│   └── content_package_critic_agent.py   # Reviews and scores final package
+│
+├── adk_adapter/                      # 🔌 Google ADK Integration
+│   ├── __init__.py
+│   ├── adapter.py                    # ADKAgentWrapper for A2A communication
+│   ├── a2a_message.py                # Message serialization/deserialization
+│   └── run_adk_app.py                # ADK application runner
+│
+├── langgraph_adapter/                # 🔌 LangGraph Integration
+│   ├── __init__.py
+│   └── adapter.py                    # LangGraphAgentWrapper for A2A communication
+│
+├── a2a_broker/                       # 📨 Agent-to-Agent Message Broker
+│   ├── __init__.py
+│   ├── __main__.py                   # Broker entry point
+│   └── broker.py                     # Pub/sub broker implementation
+│
+├── schemas/                          # 📋 Pydantic Data Models
+│   ├── __init__.py
+│   ├── state_models.py               # PodcastProductionState, FactCheckReport, etc.
+│   └── output_models.py              # PodcastContentPackage, Metadata, etc.
+│
+├── tools/                            # 🛠️ MCP Tools & External Integrations
+│   ├── __init__.py
+│   ├── mcp_client.py                 # Main MCP client (entry point)
+│   ├── mcp_client_http.py            # HTTP MCP client wrapper with fallback
+│   ├── mcp_client_sync.py            # Synchronous MCP client
+│   ├── web_search_mcp.py             # Web search tool (Serper API)
+│   ├── audio_calculator_mcp.py       # Audio duration calculator
+│   ├── youtube_transcript_tool.py    # YouTube transcript extraction
+│   ├── academic_search_tool.py       # arXiv & PubMed search
+│   ├── citation_manager.py           # Citation tracking & formatting
+│   └── dialogue_simulator.py         # Script-to-dialogue conversion
+│
+├── mcp_servers/                      # 🌐 HTTP MCP Servers
+│   ├── __init__.py
+│   ├── http_mcp_client.py            # Low-level HTTP client for MCP servers
+│   ├── web_search_http_server.py     # HTTP server for web search
+│   └── audio_calculator_http_server.py # HTTP server for audio tools
+│
+├── callbacks/                        # 📊 Monitoring & Logging
+│   ├── __init__.py
+│   └── logging_callback.py           # PodcastProductionCallback implementation
+│
+├── config/                           # ⚙️ Configuration
+│   ├── __init__.py
+│   ├── settings.py                   # Environment & settings management
+│   ├── constants.py                  # Application constants
+│   └── retry_config.py               # Retry strategy configuration
+│
+├── utils/                            # 🔧 Utility Functions
+│   ├── __init__.py
+│   ├── file_writer.py                # File export utilities
+│   ├── state_helpers.py              # State validation & helpers
+│   ├── retry_handler.py              # Retry logic with backoff
+│   ├── validation_utils.py           # Input validation utilities
+│   ├── llm_helpers.py                # LLM interaction helpers
+│   └── pydantic_compat.py            # Pydantic compatibility layer
+│
+├── output/                           # 📁 Generated Podcast Packages (gitignored)
+│   └── <topic_name>/
+│       ├── script.md
+│       ├── show_notes.md
+│       ├── social_posts.json
+│       ├── metadata.json
+│       └── podcast_package.json
+│
+├── .kiro/                            # 🔧 Kiro IDE Configuration
 │   └── settings/
-│       └── mcp.json          # MCP server configuration
-├── main.py                   # Application entry point
-├── requirements.txt          # Python dependencies
-└── .env                      # Environment variables
+│       └── mcp.json                  # MCP server configuration
+│
+├── app.py                            # 🎨 Streamlit Web Interface
+├── main.py                           # 🚀 CLI Application Entry Point
+├── start_mcp_servers.py              # 🌐 MCP Server Launcher
+├── requirements.txt                  # 📦 Python Dependencies
+├── .env.example                      # 🔐 Environment Variables Template
+├── .gitignore                        # Git ignore rules
+└── README.md                         # 📖 This file
 ```
 
 ### Adding New Agents
@@ -564,15 +621,7 @@ If you encounter issues not covered here:
 4. Verify all dependencies are installed correctly
 5. Check API key validity and quotas
 
-## Documentation
 
-- **[QUICK_START.md](QUICK_START.md)** - Get started in 5 minutes
-- **[ARCHITECTURE.md](ARCHITECTURE.md)** - Detailed system architecture
-- **[REQUIREMENTS_VERIFICATION.md](REQUIREMENTS_VERIFICATION.md)** - Project requirements verification
-- **[CHANGELOG.md](CHANGELOG.md)** - Version history and changes
-- **[README.md](README.md)** - This file (comprehensive guide)
 
-## License
 
-[Your License Here]
 
